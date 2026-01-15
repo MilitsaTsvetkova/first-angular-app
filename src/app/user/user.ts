@@ -1,5 +1,4 @@
-import { Component, input, computed } from '@angular/core';
-import { DUMMY_USERS } from '../dummy-users';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-user',
@@ -8,12 +7,25 @@ import { DUMMY_USERS } from '../dummy-users';
   styleUrl: './user.css',
 })
 export class User {
-  avatar = input.required<string>();
-  name = input.required<string>();
+  @Input({
+    required: true,
+  })
+  id!: string;
+  @Input({
+    required: true,
+  })
+  avatar!: string;
+  @Input({
+    required: true,
+  })
+  name!: string;
+  @Output() select = new EventEmitter();
 
-  imagePath = computed(() => {
-    return 'assets/users/' + this.avatar();
-  });
+  get imagePath() {
+    return 'assets/users/' + this.avatar;
+  }
 
-  onSelectUser() {}
+  onSelectUser() {
+    this.select.emit(this.id);
+  }
 }
